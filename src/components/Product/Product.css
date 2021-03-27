@@ -1,0 +1,30 @@
+.product {
+  display: flex;
+  margin-top: 20px;
+  border-bottom: 1px solid lightgrey;
+  padding-bottom: 15px;
+}
+.product-info {
+  margin-left: 4%;
+}
+.product-name {
+  color: blue;
+  font-weight: 400;
+  text-decoration: none;
+}
+.add-cart-btn {
+  border: 1px solid #846a29;
+  padding: 7px 50px;
+  background-color: #f0c14b;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+@media (max-width: 992px) { 
+  .product{
+      flex-direction: column;
+  }
+  .product-img{
+    text-align: center;
+  }
+}

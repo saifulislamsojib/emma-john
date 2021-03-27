@@ -1,0 +1,7 @@
+.not-found{
+    text-align: center;
+    color: red;
+}
+.not-found h1{
+    font-size: 2.5rem;
+}

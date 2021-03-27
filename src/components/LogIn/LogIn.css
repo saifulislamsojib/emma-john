@@ -1,0 +1,98 @@
+.login {
+  min-height: 80vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.login-section {
+  text-align: center;
+}
+.inventory {
+  text-align: center;
+}
+.yseNo {
+  margin: 0 13px;
+}
+.delete {
+  margin: 0 auto;
+  display: block;
+}
+.login button,
+.login input[type="submit"],
+.header button,
+.inventory button {
+  padding: 10px 15px;
+  border: none;
+  color: #fff;
+  border-radius: 8px;
+  outline: none;
+}
+.login button,
+.login input[type="submit"] {
+  margin: 20px;
+}
+
+.signIn-button,
+.login input[type="submit"] {
+  background-color: #008116;
+}
+.signIn-button:focus,
+.login input[type="submit"]:focus {
+  background-color: #004b0c;
+  padding: 8px 13px;
+  border: 2px solid #008116;
+}
+.signOut-button {
+  background-color: #ec1e28;
+}
+.signOut-button:focus {
+  background-color: #a00101;
+  padding: 8px 13px;
+  border: 2px solid #ec1e28;
+}
+.login input[type="text"],
+.login input[type="email"],
+.login input[type="password"] {
+  padding: 15px;
+  font-size: 15px;
+  display: block;
+  margin-bottom: 15px;
+  border-radius: 10px;
+  border: 1px solid #bbbbbb;
+  outline: none;
+  min-width: 300px;
+}
+.login input[type="text"]:focus,
+.login input[type="email"]:focus,
+.login input[type="password"]:focus {
+  border: 2px solid #0089fa;
+  padding: 14px;
+}
+.error {
+  color: red;
+}
+.success {
+  color: green;
+}
+.icon {
+  font-size: 40px;
+  cursor: pointer;
+  margin: 0 7px;
+}
+.fb {
+  color: #1094f4;
+}
+.google {
+  color: #e13e31;
+}
+.password-section {
+  position: relative;
+}
+.eye {
+  font-size: 20px;
+  position: absolute;
+  top: 30%;
+  left: 86%;
+  cursor: pointer;
+  color: #6710f4;
+}

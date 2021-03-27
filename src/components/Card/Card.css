@@ -1,0 +1,12 @@
+.prices{
+    display: flex;
+    line-height: 10px;
+    margin-bottom: 8%;
+}
+.price-details{
+    margin-right: 10px;
+}
+.total{
+    color: #b12704;
+    margin-top: 25px;
+}
