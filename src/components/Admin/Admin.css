@@ -1,0 +1,22 @@
+.admin {
+  text-align: center;
+}
+.btn-primary {
+  background-color: #2d2de6;
+  color: white;
+  padding: 12px 25px;
+  border-radius: 7px;
+  outline: none;
+  border: none;
+  cursor: pointer;
+  margin-top: 10px;
+  font-size: 15px;
+}
+.last-error {
+  display: block;
+}
+.btn-primary:focus {
+  background-color: #2323ad;
+  padding: 11px 23px;
+  border: 2px solid #3434ff;
+}

@@ -4,6 +4,7 @@ import {
   Route, Switch
 } from "react-router-dom";
 import './App.css';
+import Admin from "./components/Admin/Admin";
 import Header from './components/Header/Header';
 import Inventory from './components/Inventory/Inventory';
 import LogIn from './components/LogIn/LogIn';
@@ -44,7 +45,9 @@ function App() {
             </Route>
             {isRender &&
             <PrivateRoute path="/inventory">
-              <Inventory />
+              {loggedInUser.isAdmin ?
+              <Admin /> :
+              <Inventory />}
             </PrivateRoute>}
             {isRender &&
             <PrivateRoute path="/shipment">
@@ -56,9 +59,10 @@ function App() {
             <Route path="/product/:productKey">
               <ProductDetails />
             </Route>
+            {isRender &&
             <Route path="*">
               <NotFound />
-            </Route>
+            </Route>}
           </Switch>
         </Router>
       </div>

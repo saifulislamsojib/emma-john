@@ -1,27 +1,41 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import fakeData from '../../fakeData';
 import { addToDatabaseCart, getDatabaseCart } from '../../utilities/databaseManager';
 import Card from '../Card/Card';
 import Product from '../Product/Product';
 import './Shop.css';
 
 const Shop = () => {
-    const first10 = fakeData.slice(0, 10);
-    const [products] = useState(first10);
+    const [products, setProducts] = useState([]);
+
+    useEffect(() => {
+        fetch('https://emma-jhons.herokuapp.com/products')
+        .then(res => res.json())
+        .then((data) => setProducts(data))
+        .catch((err) => console.log(err));
+    }, []);
 
     const [cart, setCart] = useState([]);
 
     useEffect(() => {
         const savedCard = getDatabaseCart();
         const keys = Object.keys(savedCard);
-        const products = keys.map(key => {
-            const product = fakeData.find(product => product.key === key);
-            const count = savedCard[key];
-            product.quantity = count;
-            return product;
-        });
-        setCart(products);
+        const counts = Object.values(savedCard);
+
+        fetch("https://emma-jhons.herokuapp.com/productsByKeys", {
+            method: "POST",
+            body: JSON.stringify(keys),
+            headers: {"Content-Type": "application/json"}
+        })
+        .then(res => res.json())
+        .then(data => {
+            const matchedProducts = data.map((product, i) => {
+                product.quantity = counts[i];
+                return product;
+            })
+            setCart(matchedProducts);
+        })
+        .catch(err => console.log (err));
     }, []);
 
     const handleProduct = (product) => {

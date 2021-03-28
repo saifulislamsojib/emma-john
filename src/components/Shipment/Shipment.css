@@ -1,14 +1,17 @@
-.shipment {
+.shipment,
+.admin {
   display: flex;
   justify-content: center;
   align-items: center;
   min-height: 60vh;
   flex-direction: column;
 }
-.ship-form {
-    margin-bottom: 10px;
+.ship-form,
+.admin-form {
+  margin-bottom: 10px;
 }
-.ship-form input {
+.ship-form input,
+.admin-form input {
   display: block;
   margin-top: 30px;
   padding: 12px;

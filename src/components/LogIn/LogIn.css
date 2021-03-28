@@ -44,6 +44,7 @@
 }
 .signOut-button {
   background-color: #ec1e28;
+  cursor: pointer;
 }
 .signOut-button:focus {
   background-color: #a00101;
@@ -70,6 +71,8 @@
 }
 .error {
   color: red;
+  max-width: 345px;
+  margin: 0 auto;
 }
 .success {
   color: green;

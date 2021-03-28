@@ -1,32 +1,28 @@
 import { faFacebook, faGithub, faGoogle } from '@fortawesome/free-brands-svg-icons';
 import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { useContext, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { useHistory, useLocation } from "react-router";
 import { userContext } from "../../App";
 import './LogIn.css';
-import { createUser, fbProvider, googleProvider, handleSignIn, signInUserWithEmailAndPassword, gitProvider } from './logInManager';
+import { createUser, fbProvider, gitProvider, googleProvider, handleSignIn, signInUserWithEmailAndPassword } from './logInManager';
 
 const LogIn = () => {
 
-    const [user, setUser] = useState({
-        isSignIn: false,
-        name: "",
-        email: "",
-        password: "",
-        photo: "",
-        error: "",
-        success: false
-    });
+    const [, setLoggedInUser] = useContext(userContext);
 
     const [newUser, setNewUser] = useState(false);
+
+    const [admin, setAdmin] = useState({});
+
+    const [userInput, setUserInput] = useState({});
 
     const [passwordType, setPasswordType] = useState({
         passwordTypes: 'password',
         passwordIcon: faEye
     });
 
-    const [ , setLoggedInUser] = useContext(userContext);
+    const [error, setError] = useState('');
 
     const history = useHistory();
     const location = useLocation();
@@ -39,20 +35,24 @@ const LogIn = () => {
     const updateUser = (User, user, create) => {
         User(user)
         .then(res => {
-            if (create) {
-                updateUser(signInUserWithEmailAndPassword, user)
+            if (res.email && !res.message) {
+                if (create) {
+                    updateUser(signInUserWithEmailAndPassword, user)
+                }
+                else{
+                    if (res.email === admin.email) {
+                        res.isAdmin = true;
+                    }
+                    setLoggedInUser(res);
+                    localStorage.setItem('user', JSON.stringify(res));
+                    history.replace(from);
+                }
             }
             else{
-                setUser(res);
-                setLoggedInUser(res);
-                localStorage.setItem('user', JSON.stringify(res));
-                history.replace(from);
+                setError(res.message);
             }
-        })
-        .catch(res => {
-            setUser(res);
-        })
-    }
+        });
+    };
 
     const handlePasswordType = () => {
         const {passwordTypes, passwordIcon} = passwordType;
@@ -66,12 +66,12 @@ const LogIn = () => {
     };
 
     const handleSubmit = e => {
-        const {email, password} = user;
+        const {email, password} = userInput;
         if (email && password && newUser) {
-            updateUser(createUser, user, true)
+            updateUser(createUser, userInput, true)
         }
         if (email && password && !newUser) {
-            updateUser(signInUserWithEmailAndPassword, user)
+            updateUser(signInUserWithEmailAndPassword, userInput)
         }
         e.preventDefault();
     }
@@ -88,13 +88,18 @@ const LogIn = () => {
           isValid = passwordLength && passwordHasNumber;
         }
         if (isValid) {
-          const validUser = {...user};
+          const validUser = {...userInput};
           validUser[name] = value;
-          setUser(validUser);
+          setUserInput(validUser);
         }
       }
 
-      const {error} = user;
+      useEffect(() => {
+        fetch('https://emma-jhons.herokuapp.com/emmaJhonsAdmin')
+        .then(res=>res.json())
+        .then(data => setAdmin(data))
+      }, []);
+
       const {passwordTypes, passwordIcon} = passwordType;
     return (
         <div className="login">
@@ -114,7 +119,7 @@ const LogIn = () => {
                     </div>
                     <input type="submit" value={newUser ? 'Sign up' : "Sign In"} required />
                 </form>
-                <h2 className="error">{error}</h2>
+                <p className="error">{error}</p>
                 <FontAwesomeIcon onClick={()=> signIn(fbProvider)} className='icon fb' icon={faFacebook} />
                 <FontAwesomeIcon onClick={()=> signIn(googleProvider)} className='icon google' icon={faGoogle} />
                 <FontAwesomeIcon onClick={()=> signIn(gitProvider)} className='icon' icon={faGithub} />

@@ -22,10 +22,10 @@ const Header = () => {
                 <img src={logo} alt=""/>
             </div>
             <nav>
-                <Link className='link' to="/shop">Shop</Link>
+                <Link className='link' to="/">Shop</Link>
                 <Link className='link' to="/review">Order review</Link>
                 <Link className='link' to="/inventory">Manage Inventory</Link>
-                { loggedInUser.email ? <button className="signOut-button" onClick={signOut}>Sign out</button>:
+                { loggedInUser?.email ? <button className="signOut-button" onClick={signOut}>Sign out</button>:
                     <Link to="/login">
                         <button className="signIn-button">Sign in</button>
                     </Link>

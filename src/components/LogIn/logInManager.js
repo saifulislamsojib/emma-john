@@ -12,40 +12,37 @@ export const fbProvider = new firebase.auth.FacebookAuthProvider();
 
 export const gitProvider = new firebase.auth.GithubAuthProvider();
 
+const setUser = res => {
+    const {email, displayName, photoURL} = res.user;
+    const newUser = {
+        email,
+        name: displayName,
+        photo: photoURL
+    };
+    return newUser;
+};
+
 export const handleSignIn = (provider) => {
     return firebase.auth()
     .signInWithPopup(provider)
     .then(res => {
-        const signInUser = res.user;
-        signInUser.isSignIn = true;
-        signInUser.error = '';
-        signInUser.success = true;
-        return signInUser;
+        return setUser(res);
     })
     .catch(err => {
-        const signInUser = {};
-        signInUser.error = err.message;
-        signInUser.success = false;
-        return signInUser;
-    })
-}
+        return err;
+    });
+};
 
 export const handleSignOut = () => {
     return firebase.auth()
     .signOut()
     .then(() => {
-      const signOutUser = {
-        isSignIn: false,
-        name: "",
-        email: "",
-        photo: ""
-      }
-      return signOutUser;
+      return {};
     })
     .catch(err => {
       console.log(err.message);
     });
-}
+};
 
 const UpdateUserInfo = (name) => {
     firebase.auth().currentUser
@@ -58,53 +55,40 @@ const UpdateUserInfo = (name) => {
     .catch(err => {
         console.log(err.message);
     });
-}
+};
 
 export const createUser = user => {
     const { email, password, name} = user;
     return firebase.auth().createUserWithEmailAndPassword(email, password)
     .then(res => {
-        const signInUser = res.user;
-        signInUser.error = '';
-        signInUser.success = true;
         UpdateUserInfo(name);
-        return signInUser;
+        return setUser(res);
     })
     .catch(err => {
-        const signInUser = {};
-        signInUser.error = err.message;
-        signInUser.success = false;
-        return signInUser;
+        return err;
     });
-}
+};
 
 export const signInUserWithEmailAndPassword = user => {
     const {email, password} = user;
     return firebase.auth().signInWithEmailAndPassword(email, password)
     .then(res => {
-        const signInUser = res.user;
-        signInUser.isSignIn = true;
-        signInUser.error = '';
-        signInUser.success = true;
-        return signInUser;
+        return setUser(res);
     })
     .catch(err => {
-        const signInUser = {};
-        signInUser.error = err.message;
-        signInUser.success = false;
-        return signInUser;
+        return err;
     });
-}
+};
 
 export const DeleteUserAccount = ()=> {
     const currentUser = firebase.auth().currentUser;
     if (currentUser) {
         return currentUser.delete()
         .then(()=> {
-            
+            return {};
         })
         .catch(err=> {
             console.log(err)
         });
-    }
-}
+    };
+};
