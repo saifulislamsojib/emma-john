@@ -23,6 +23,15 @@ function App() {
 
   const [isRender, setIsRender] = useState(false);
 
+  const [products, setProducts] = useState([]);
+
+    useEffect(() => {
+        fetch('https://emma-jhons.herokuapp.com/products')
+        .then(res => res.json())
+        .then((data) => setProducts(data))
+        .catch((err) => console.log(err));
+    }, []);
+
   useEffect(() => {
     const user = JSON.parse(localStorage.getItem('user'));
     user && setLoggedInUser(user);
@@ -35,10 +44,10 @@ function App() {
           <Header />
           <Switch>
             <Route exact path="/">
-              <Shop />
+              <Shop products={products} />
             </Route>
             <Route path="/shop">
-              <Shop />
+              <Shop products={products} />
             </Route>
             <Route path="/review">
               <Review />

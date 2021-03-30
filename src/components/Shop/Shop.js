@@ -1,26 +1,18 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import spinner from '../../images/Spinner.svg';
 import { addToDatabaseCart, getDatabaseCart } from '../../utilities/databaseManager';
 import Card from '../Card/Card';
 import Product from '../Product/Product';
 import './Shop.css';
 
-const Shop = () => {
-    const [products, setProducts] = useState([]);
-
-    useEffect(() => {
-        fetch('https://emma-jhons.herokuapp.com/products')
-        .then(res => res.json())
-        .then((data) => setProducts(data))
-        .catch((err) => console.log(err));
-    }, []);
-
+const Shop = ({products}) => {
+    
     const [cart, setCart] = useState([]);
 
     useEffect(() => {
         const savedCard = getDatabaseCart();
         const keys = Object.keys(savedCard);
-        const counts = Object.values(savedCard);
 
         fetch("https://emma-jhons.herokuapp.com/productsByKeys", {
             method: "POST",
@@ -29,10 +21,10 @@ const Shop = () => {
         })
         .then(res => res.json())
         .then(data => {
-            const matchedProducts = data.map((product, i) => {
-                product.quantity = counts[i];
+            const matchedProducts = data.map(product => {
+                product.quantity = savedCard[product.key];
                 return product;
-            })
+            });
             setCart(matchedProducts);
         })
         .catch(err => console.log (err));
@@ -45,18 +37,23 @@ const Shop = () => {
             addedProduct.quantity = addedProduct.quantity + 1;
             const otherProducts = cart.filter(pd => pd.key !== product.key);
             newCart = [...otherProducts, addedProduct];
+            addToDatabaseCart(product.key, addedProduct.quantity);
         }
         else{
             product.quantity = 1;
             newCart = [...cart, product];
+            addToDatabaseCart(product.key, product.quantity);
         }
         setCart(newCart);
-        addToDatabaseCart(product.key, product.quantity);
     }
 
     return (
         <div className="shop-review">
             <div className="products">
+                {products.length === 0 &&
+                <div className="spinner">
+                    <img src={spinner} alt=""/>
+                </div>}
                 {
                     products.map(product => <Product product={product} handleProduct={handleProduct} key={product.key} /> )
                 }

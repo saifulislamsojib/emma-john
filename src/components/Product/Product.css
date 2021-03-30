@@ -18,13 +18,19 @@
   background-color: #f0c14b;
   border-radius: 5px;
   cursor: pointer;
+  outline: none;
+}
+.add-cart-btn:focus {
+  background-color: #ffb700;
+  border: 2px solid #846a29;
+  padding: 6px 49px;
 }
 
-@media (max-width: 992px) { 
-  .product{
-      flex-direction: column;
+@media (max-width: 992px) {
+  .product {
+    flex-direction: column;
   }
-  .product-img{
+  .product-img {
     text-align: center;
   }
 }
